@@ -1,5 +1,84 @@
-@import "~bootstrap/scss/bootstrap";
+/***
+  Colors
+ */
 
-body {
-    background-color: lightgray;
+/* Bootstrap colors personalised */
+$primary: #0EA47A;
+$secondary: #E48257;
+$dark: #393232;
+$light: #F2EDD7;
+
+$colors: (primary, $primary),
+        (secondary, $secondary),
+        (dark, $dark),
+        (light, $light);
+
+/* Bootstrap import */
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+
+
+/***
+  Fonts
+ */
+@font-face {
+    font-family: 'Space Mono Bold';
+    src: url("fonts/SpaceMono-Bold.ttf") format("truetype");
 }
+
+@font-face {
+    font-family: 'Space Mono';
+    src: url("fonts/SpaceMono-Regular.ttf") format("truetype");
+}
+
+$space-mono: 'Space Mono', serif;
+$space-mono-bold: 'Space Mono Bold', serif;
+$segoe-ui: 'Segoe UI', sans-serif;
+$segoe-ui-light: 'Segoe UI Light', sans-serif;
+$segoe-ui-bold: 'Segoe UI Bold', sans-serif;
+
+$fonts: (space-mono, $space-mono),
+        (space-mono-bold, $space-mono-bold),
+        (segoe-ui, $segoe-ui),
+        (segoe-ui-bold, $segoe-ui-bold),
+        (segoe-ui-light, $segoe-ui-light);
+
+@each $name, $font in $fonts {
+  .text-#{$name} {
+    font-family: #{$font};
+  }
+}
+
+
+/***
+  Buttons
+ */
+@mixin button {
+  border-radius: 22px;
+  padding: 3px 20px;
+  font-family: $space-mono;
+}
+
+@each $name, $color in $colors {
+  .button-#{$name} {
+    @include button;
+    background-color: $color;
+    border: 2px solid $color;
+    color: white;
+
+    &:hover {
+      background-color: transparent;
+      transition: background-color 0.5s;
+    }
+
+    &:active {
+      background-color: transparentize($color, 0.4);
+    }
+  }
+}
+
+
+.rounded-corners {
+  border-radius: 22px;
+}
+
