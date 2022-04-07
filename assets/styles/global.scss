@@ -17,7 +17,6 @@ $colors: (primary, $primary),
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 
-
 /***
   Fonts
  */
@@ -51,6 +50,15 @@ $fonts: (space-mono, $space-mono),
 
 
 /***
+  Body
+ */
+body {
+  background-color: lighten($light, 6%);
+  font-family: $segoe-ui;
+}
+
+
+/***
   Buttons
  */
 @mixin button {
@@ -77,8 +85,27 @@ $fonts: (space-mono, $space-mono),
   }
 }
 
-
+/***
+  Box, rounded corners, backgrounds, shadows
+ */
 .rounded-corners {
   border-radius: 22px;
 }
 
+
+/***
+  Navbar
+ */
+.navbar {
+  padding-top: 0.01rem;
+  padding-bottom: 0.01rem;
+}
+
+.navbar-burger {
+  background-color: $secondary;
+  border-radius: 30px;
+}
+
+.navbar-dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")
+}
