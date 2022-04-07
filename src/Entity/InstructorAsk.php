@@ -4,13 +4,14 @@ namespace App\Entity;
 
 use App\Repository\InstructorAskRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: InstructorAskRepository::class)]
 class InstructorAsk
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'string')]
     private $id;
 
     #[ORM\Column(type: 'string', length: 25)]
@@ -28,7 +29,12 @@ class InstructorAsk
     #[ORM\Column(type: 'string', length: 255)]
     private $password;
 
-    public function getId(): ?int
+    public function __construct()
+    {
+        $this->id = Uuid::v4();
+    }
+
+    public function getId(): ?string
     {
         return $this->id;
     }
