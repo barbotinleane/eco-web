@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoWeb | Découvrez nos formations{% endblock %}
+
+{% block body %}
+    <section class="row my-5">
+        <h1 class="text-space-mono-bold text-secondary">Formations</h1>
+    </section>
+
+    <section class="row my-5 mx-2">
+        {% for formation in formations %}
+            <div class="col-12 bg-dark text-white rounded-corners p-4 my-2">
+                <img src="{{ formation.image }}" class="w-100">
+                <h2 class="text-space-mono text-light mt-4">
+                    {{ formation.title }}
+                </h2>
+                <p>
+                    {{ formation.description }}
+                </p>
+                <div class="text-center">
+                    <button class="button-primary">
+                        Accéder à la formation
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}
