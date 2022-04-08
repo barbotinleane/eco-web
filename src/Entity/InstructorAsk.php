@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use App\Repository\InstructorAskRepository;
@@ -10,7 +11,6 @@ use Symfony\Component\Uid\Uuid;
 class InstructorAsk
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'string')]
     private $id;
 

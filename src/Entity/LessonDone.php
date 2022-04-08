@@ -11,7 +11,7 @@ class LessonDone
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'string')]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
     #[ORM\ManyToOne(targetEntity: Lesson::class)]
@@ -22,14 +22,21 @@ class LessonDone
     #[ORM\JoinColumn(nullable: false)]
     private $learner;
 
-    public function __construct()
-    {
-        $this->id = Uuid::v4();
-    }
-
-    public function getId(): ?string
+    public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getLesson(): ?Lesson
+    {
+        return $this->lesson;
+    }
+
+    public function setLesson(?Lesson $lesson): self
+    {
+        $this->lesson = $lesson;
+
+        return $this;
     }
 
     public function getLearner(): ?User

@@ -21,6 +21,10 @@ class Formation
     #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Section::class, orphanRemoval: true)]
     private $sections;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $author;
+
     public function __construct()
     {
         $this->sections = new ArrayCollection();
@@ -45,7 +49,7 @@ class Formation
 
     /**
      * @return Collection<int, Section>
-     */
+    **/
     public function getSections(): Collection
     {
         return $this->sections;
@@ -69,6 +73,18 @@ class Formation
                 $section->setFormation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

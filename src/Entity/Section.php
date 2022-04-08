@@ -63,9 +63,9 @@ class Section
         return $this;
     }
 
-    /**
+    /*
      * @return Collection<int, Question>
-     */
+    **/
     public function getQuestions(): Collection
     {
         return $this->questions;
@@ -93,9 +93,9 @@ class Section
         return $this;
     }
 
-    /**
+    /*
      * @return Collection<int, Lesson>
-     */
+    */
     public function getLessons(): Collection
     {
         return $this->lessons;

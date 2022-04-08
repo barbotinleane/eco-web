@@ -76,7 +76,7 @@ class Lesson
 
     /**
      * @return Collection<int, Resources>
-     */
+    **/
     public function getResources(): Collection
     {
         return $this->resources;
