@@ -118,4 +118,12 @@ class Formation
 
         return $this;
     }
+
+    public function toArray() {
+        return [
+            "title" => $this->title,
+            "description" => $this->description,
+            "image" => $this->image
+        ];
+    }
 }

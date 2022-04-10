@@ -45,6 +45,20 @@ class FormationRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByQuery($query)
+    {
+        $qb = $this->createQueryBuilder('f');
+        $formations = $qb
+            ->where($qb->expr()->orX(
+                $qb->expr()->like('f.title', $qb->expr()->literal('%'.$query.'%'))
+            ))
+            ->getQuery()
+            ->getResult()
+            ;
+
+        return $formations;
+    }
+
     // /**
     //  * @return Formation[] Returns an array of Formation objects
     //  */
