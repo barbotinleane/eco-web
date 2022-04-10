@@ -23,7 +23,7 @@ class UserFixtures extends Fixture
         $admin = new User();
         $admin->setPseudo($faker->userName);
         $admin->setEmail($faker->email);
-        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'chielzihslj7557q5q!shj:q5'));
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, 'admin'));
         $admin->setRoles(['ROLE_ADMIN']);
         $manager->persist($admin);
         $manager->flush();
@@ -34,7 +34,7 @@ class UserFixtures extends Fixture
             $formator = new User();
             $formator->setPseudo($faker->userName);
             $formator->setEmail($faker->email);
-            $formator->setPassword($this->passwordHasher->hashPassword($formator, $faker->password));
+            $formator->setPassword($this->passwordHasher->hashPassword($formator, 'formator'));
             $formator->setRoles(['ROLE_FORMATOR']);
             $manager->persist($formator);
 
@@ -46,7 +46,7 @@ class UserFixtures extends Fixture
             $learner = new User();
             $learner->setPseudo($faker->userName);
             $learner->setEmail($faker->email);
-            $learner->setPassword($this->passwordHasher->hashPassword($learner, $faker->password));
+            $learner->setPassword($this->passwordHasher->hashPassword($learner, 'learner'));
             $learner->setRoles(['ROLE_LEARNER']);
             $manager->persist($learner);
 
