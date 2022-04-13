@@ -17,7 +17,6 @@ class FormationController extends AbstractController
         $search = $this->createForm(SearchType::class);
 
         $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
-        dump($arrayOfFormations);
 
         return $this->render('formation/index.html.twig', [
             'formations' => $arrayOfFormations,
@@ -25,12 +24,71 @@ class FormationController extends AbstractController
         ]);
     }
 
-    #[Route('/formations/{query}', name: 'app_formation_search')]
+    #[Route('/formations/{formation}', name: 'app_formation_view')]
+    public function formation(FormationRepository $formationRepository, string $formation): Response
+    {
+        $formation = $formationRepository->find($formation);
+
+        return $this->render('formation/view.html.twig', [
+            'formations' => $formation,
+        ]);
+    }
+
+    #[Route('/formations/{formation}/{section}', name: 'app_formation_section')]
+    public function section(FormationRepository $formationRepository): Response
+    {
+        $formations = $formationRepository->findAll();
+        $search = $this->createForm(SearchType::class);
+
+        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
+
+        return $this->render('formation/index.html.twig', [
+            'formations' => $arrayOfFormations,
+            'search' => $search->createView(),
+        ]);
+    }
+
+    #[Route('/formations/{formation}/{section}/{lesson}', name: 'app_formation_section')]
+    public function lesson(FormationRepository $formationRepository): Response
+    {
+        $formations = $formationRepository->findAll();
+        $search = $this->createForm(SearchType::class);
+
+        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
+
+        return $this->render('formation/index.html.twig', [
+            'formations' => $arrayOfFormations,
+            'search' => $search->createView(),
+        ]);
+    }
+
+    #[Route('/json/formations/{query}', name: 'app_formation_search')]
     public function search(FormationRepository $formationRepository, string $query) {
         if($query === "all") {
             $formations = $formationRepository->findAll();
         } else {
             $formations = $formationRepository->findByQuery($query);
+        }
+
+        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
+
+        return $this->json([
+            "formations" => $arrayOfFormations
+        ]);
+    }
+
+    #[Route('/json/formation/{filter}', name: 'app_formation_filter')]
+    public function filter(FormationRepository $formationRepository, string $filter) {
+        if($this->getUser()) {
+            if ($filter === "current") {
+                $formations = $formationRepository->findCurrent($this->getUser()->getId());
+            } elseif ($filter === "done") {
+                $formations = $formationRepository->findDone($this->getUser()->getId());
+            } else {
+                $formations = $formationRepository->findAll();
+            }
+        } else {
+            $formations = $formationRepository->findAll();
         }
 
         $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
@@ -47,13 +105,16 @@ class FormationController extends AbstractController
 
                 $arrayOfFormations = [];
                 foreach ($formations as $formation) {
+                    $formationWritten = false;
                     foreach ($progress as $formationProgress) {
                         if($formation->getId() == $formationProgress['id']) {
                             $arrayOfFormations[] = $formation->toArray();
                             $arrayOfFormations[array_key_last($arrayOfFormations)]['progress'] = $formationProgress['progress'];
-                        } else {
-                            $arrayOfFormations[] = $formation->toArray();
+                            $formationWritten = true;
                         }
+                    }
+                    if ($formationWritten === false) {
+                        $arrayOfFormations[] = $formation->toArray();
                     }
                 }
             }

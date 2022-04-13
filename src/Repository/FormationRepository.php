@@ -68,13 +68,13 @@ class FormationRepository extends ServiceEntityRepository
 
         $sql = '
             SELECT DISTINCT 
-                formation.id, 
+                formation.id AS formationId, 
                 COUNT(lesson_done.lesson_id) OVER (PARTITION BY formation.id) AS lessons_done,
                 (SELECT COUNT(lesson.title) 
                     FROM section 
                     JOIN formation ON section.formation_id = formation.id
                     JOIN lesson ON lesson.section_id = section.id
-                    WHERE formation.id = 29) AS all_lessons
+                    WHERE formation.id = formationId) AS all_lessons
             FROM section 
                 JOIN formation ON section.formation_id = formation.id
                 JOIN lesson ON lesson.section_id = section.id
@@ -87,15 +87,42 @@ class FormationRepository extends ServiceEntityRepository
 
         $progressForEachFormation = [];
         foreach ($lessonsDoneForEachFormation as $formation) {
-            $progress = 100*$formation['lessons_done']/$formation['all_lessons'];
+            $progress = round(100*$formation['lessons_done']/$formation['all_lessons']);
 
             $progressForEachFormation[] = [
-                'id' => $formation['id'],
+                'id' => $formation['formationId'],
                 'progress' => $progress,
             ];
         }
 
         return $progressForEachFormation;
+    }
+
+    public function findCurrent($learnerId) {
+        $progressForEachFormation = $this->findLearnerProgressForEachFormation($learnerId);
+        $currentFormations = [];
+
+        foreach ($progressForEachFormation as $formation) {
+            if($formation['progress'] < 100 && $formation['progress'] > 0) {
+                $currentFormations[] = $this->find($formation['id']);
+            }
+        }
+
+        return $currentFormations;
+    }
+
+    public function findDone($learnerId) {
+        $progressForEachFormation = $this->findLearnerProgressForEachFormation($learnerId);
+        $doneFormations = [];
+        dump($progressForEachFormation);
+
+        foreach ($progressForEachFormation as $formation) {
+            if($formation['progress'] > 99) {
+                $doneFormations[] = $this->find($formation['id']);
+            }
+        }
+
+        return $doneFormations;
     }
 
     /*
