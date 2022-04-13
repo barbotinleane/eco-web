@@ -40,5 +40,4 @@ $field.keyup(function (event) {
             formationsDisplayed.append(formation);
         })
     })
-
 })

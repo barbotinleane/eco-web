@@ -59,22 +59,44 @@ class FormationRepository extends ServiceEntityRepository
         return $formations;
     }
 
-    // /**
-    //  * @return Formation[] Returns an array of Formation objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
+    /**
+    * @return Formation[] Returns an array of Formation objects
     */
+    public function findLearnerProgressForEachFormation($learnerId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT DISTINCT 
+                formation.id, 
+                COUNT(lesson_done.lesson_id) OVER (PARTITION BY formation.id) AS lessons_done,
+                (SELECT COUNT(lesson.title) 
+                    FROM section 
+                    JOIN formation ON section.formation_id = formation.id
+                    JOIN lesson ON lesson.section_id = section.id
+                    WHERE formation.id = 29) AS all_lessons
+            FROM section 
+                JOIN formation ON section.formation_id = formation.id
+                JOIN lesson ON lesson.section_id = section.id
+                JOIN lesson_done ON lesson.id = lesson_done.lesson_id
+            WHERE lesson_done.learner_id = :learner';
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['learner' => $learnerId]);
+
+        $lessonsDoneForEachFormation = $resultSet->fetchAllAssociative();
+
+        $progressForEachFormation = [];
+        foreach ($lessonsDoneForEachFormation as $formation) {
+            $progress = 100*$formation['lessons_done']/$formation['all_lessons'];
+
+            $progressForEachFormation[] = [
+                'id' => $formation['id'],
+                'progress' => $progress,
+            ];
+        }
+
+        return $progressForEachFormation;
+    }
 
     /*
     public function findOneBySomeField($value): ?Formation

@@ -11172,6 +11172,26 @@ body {
   background-color: rgba(14, 164, 122, 0.6);
 }
 
+.button-check-primary + label {
+  border-radius: 22px;
+  padding: 3px 20px;
+  font-family: "Space Mono", serif;
+  background-color: transparent;
+  border: 2px solid #0EA47A;
+  color: #0EA47A;
+  cursor: pointer;
+}
+.button-check-primary:hover + label {
+  background-color: #0EA47A;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
+}
+.button-check-primary:checked + label {
+  background-color: #0EA47A;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
+}
+
 .button-secondary {
   border-radius: 22px;
   padding: 3px 20px;
@@ -11186,6 +11206,26 @@ body {
 }
 .button-secondary:active {
   background-color: rgba(228, 130, 87, 0.6);
+}
+
+.button-check-secondary + label {
+  border-radius: 22px;
+  padding: 3px 20px;
+  font-family: "Space Mono", serif;
+  background-color: transparent;
+  border: 2px solid #E48257;
+  color: #E48257;
+  cursor: pointer;
+}
+.button-check-secondary:hover + label {
+  background-color: #E48257;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
+}
+.button-check-secondary:checked + label {
+  background-color: #E48257;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
 }
 
 .button-dark {
@@ -11204,6 +11244,26 @@ body {
   background-color: rgba(57, 50, 50, 0.6);
 }
 
+.button-check-dark + label {
+  border-radius: 22px;
+  padding: 3px 20px;
+  font-family: "Space Mono", serif;
+  background-color: transparent;
+  border: 2px solid #393232;
+  color: #393232;
+  cursor: pointer;
+}
+.button-check-dark:hover + label {
+  background-color: #393232;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
+}
+.button-check-dark:checked + label {
+  background-color: #393232;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
+}
+
 .button-light {
   border-radius: 22px;
   padding: 3px 20px;
@@ -11218,6 +11278,26 @@ body {
 }
 .button-light:active {
   background-color: rgba(242, 237, 215, 0.6);
+}
+
+.button-check-light + label {
+  border-radius: 22px;
+  padding: 3px 20px;
+  font-family: "Space Mono", serif;
+  background-color: transparent;
+  border: 2px solid #F2EDD7;
+  color: #F2EDD7;
+  cursor: pointer;
+}
+.button-check-light:hover + label {
+  background-color: #F2EDD7;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
+}
+.button-check-light:checked + label {
+  background-color: #F2EDD7;
+  color: #F2EDD7;
+  transition: background-color 0.5s;
 }
 
 /***

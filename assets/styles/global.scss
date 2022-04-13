@@ -83,6 +83,28 @@ body {
       background-color: transparentize($color, 0.4);
     }
   }
+
+  .button-check-#{$name} {
+    & + label {
+      @include button;
+      background-color: transparent;
+      border: 2px solid $color;
+      color: $color;
+      cursor: pointer;
+    }
+
+    &:hover + label {
+      background-color: $color;
+      color: $light;
+      transition: background-color 0.5s;
+    }
+
+    &:checked + label {
+      background-color: $color;
+      color: $light;
+      transition: background-color 0.5s;
+    }
+  }
 }
 
 /***
