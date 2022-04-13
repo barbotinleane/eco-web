@@ -77,7 +77,7 @@ class FormationController extends AbstractController
         ]);
     }
 
-    #[Route('/formations/done/{formation}/{lesson}', name: 'app_formation_lesson_done')]
+    #[Route('/done/{formation}/{lesson}', name: 'app_formation_lesson_done')]
     public function lessonDone(LessonRepository $lessonRepository, EntityManagerInterface $entityManager, $formation, $lesson): Response
     {
         $lesson = $lessonRepository->find($lesson);
@@ -87,7 +87,7 @@ class FormationController extends AbstractController
         $entityManager->persist($lessonDone);
         $entityManager->flush();
 
-        return $this->render('app_formation_view', ['formation' => $formation]);
+        return $this->redirectToRoute('app_formation_view', ['formation' => $formation]);
     }
 
     #[Route('/json/formations/{query}', name: 'app_formation_search')]

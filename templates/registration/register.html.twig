@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'inscrire{% endblock %}
+
+{% block body %}
+<section class="my-5">
+    {% if app.user %}
+        <div>
+            Vous êtes déjà connecté, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+        </div>
+    {% else %}
+        <h1 class="text-space-mono-bold text-secondary">Créer un compte</h1>
+        <p>
+            Pour accéder au contenu des formations et à votre progression, veuillez créer un compte.
+        </p>
+
+        {{ form_start(registrationForm) }}
+        <div>
+            {{ form_label(registrationForm.pseudo) }}
+            <br>
+            {{ form_widget(registrationForm.pseudo) }}
+
+            <small>{{ form_help(registrationForm.pseudo) }}</small>
+
+            <div class="form-error">
+                {{ form_errors(registrationForm.pseudo) }}
+            </div>
+        </div>
+
+        <div>
+            {{ form_label(registrationForm.email) }}<br>
+            {{ form_widget(registrationForm.email) }}
+
+            <small>{{ form_help(registrationForm.email) }}</small>
+
+            <div class="form-error">
+                {{ form_errors(registrationForm.email) }}
+            </div>
+        </div>
+
+        <div>
+            {{ form_label(registrationForm.plainPassword) }}<br>
+            {{ form_widget(registrationForm.plainPassword) }}
+
+            <small>{{ form_help(registrationForm.plainPassword) }}</small>
+
+            <div class="form-error">
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+        </div>
+
+        <div class="text-center m-5">
+            <button class="button-primary text-dark" type="submit">
+                S'inscrire
+            </button>
+        </div>
+        {{ form_end(registrationForm) }}
+    {% endif %}
+</section>
+{% endblock %}
