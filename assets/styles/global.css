@@ -11342,11 +11342,34 @@ html {
   Titles
  */
 h1, .h1 {
-  font-size: 2.5em;
+  font-size: 2.9em;
 }
 
 h2, .h2 {
-  font-size: 1.3em;
+  font-size: 1.8em;
+}
+
+h3, .h3 {
+  font-size: 1.2em;
+}
+
+/***
+Links
+ */
+.link-dark {
+  color: #393232;
+  text-decoration: none;
+}
+.link-dark:hover {
+  color: #0EA47A;
+}
+
+.link-light {
+  color: #F2EDD7;
+  text-decoration: none;
+}
+.link-light:hover {
+  color: #0EA47A;
 }
 
 /*# sourceMappingURL=global.css.map */

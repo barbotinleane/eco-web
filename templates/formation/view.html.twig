@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoWeb | Formation {{ formation.title }}{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_LEARNER') %}
+    <section class="row my-5">
+        <div class="col-12 col-sm-3 order-1 order-sm-2">
+            <img src="{{ formation.image }}" class="w-100">
+        </div>
+        <div class="col-12 col-sm-9 order-2 order-sm-1">
+            <h1 class="text-space-mono-bold text-secondary">{{ formation.title }}</h1>
+            <p>
+                {{ formation.description }}
+            </p>
+            {% if formation.progress is defined %}
+                <div class="text-secondary mb-3">
+                    <p>Votre progression : </p>
+                    <div class="progress">
+                        <div
+                                class="progress-bar bg-secondary"
+                                role="progressbar"
+                                style="width: {{ formation.progress }}%;"
+                                aria-valuenow="{{ formation.progress }}"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                        >
+                            {{ formation.progress }}%
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="p-none p-sm-2">
+        {% for section in sections %}
+            <div class="bg-dark rounded-corners px-1 py-3 px-sm-4 my-3">
+                <h2 class="text-primary text-space-mono-bold">{{ section.title }}</h2>
+                <div class="p-1 p-sm-2">
+                    {% for lessonSection in lessons %}
+                        {% if lessonSection.id == section.id %}
+                            {% for lesson in lessonSection.lessons %}
+                                <div class="d-flex justify-content-between">
+                                    <h3 class="text-space-mono text-dark">
+                                        <a
+                                                class="link-light"
+                                                href="{{ path("app_formation_lesson", {'formation': formation.id, 'lesson':lesson.id}) }}">
+                                            {{ lesson.title }}
+                                        </a>
+                                    </h3>
+                                    {% for lessonDone in lessonsDone %}
+                                        {% if lessonDone == lesson.id %}
+                                            <div class="text-secondary">
+                                                <i class="fa-solid fa-check"></i>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+
+    <section class="text-center m-5">
+        <a class="button-primary" href="{{ path("app_formation") }}">Revenir à la liste des formations</a>
+    </section>
+
+    {% else %}
+    <p>Vous n'avez pas accès à cette page. Veuillez vous connecter pour accéder aux formations.</p>
+    {% endif %}
+{% endblock %}

@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\LessonDone;
 use App\Form\SearchType;
 use App\Repository\FormationRepository;
+use App\Repository\LessonRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 class FormationController extends AbstractController
 {
@@ -28,38 +31,63 @@ class FormationController extends AbstractController
     public function formation(FormationRepository $formationRepository, string $formation): Response
     {
         $formation = $formationRepository->find($formation);
+        $formationWithProgress = $this->formationsToArrayWithProgress($formation, $formationRepository);
+
+        $sections = $formation->getSections();
+        $lessonsDone = $this->getUser()->getLessonDones();
+        $lessonsDoneId = [];
+
+        foreach($lessonsDone as $lessonDone) {
+            $lessonsDoneId[] = $lessonDone->getLesson()->getId();
+        }
+
+        $lessons = [];
+        foreach($sections as $section) {
+            $lessons[] = [
+                'id' => $section->getId(),
+                'lessons' => $section->getLessons(),
+            ];
+        }
 
         return $this->render('formation/view.html.twig', [
-            'formations' => $formation,
+            'formation' => $formationWithProgress,
+            'sections' => $sections,
+            'lessons' => $lessons,
+            'lessonsDone' => $lessonsDoneId,
         ]);
     }
 
-    #[Route('/formations/{formation}/{section}', name: 'app_formation_section')]
-    public function section(FormationRepository $formationRepository): Response
+    #[Route('/formations/{formation}/{lesson}', name: 'app_formation_lesson')]
+    public function lesson(LessonRepository $lessonRepository, $formation, $lesson): Response
     {
-        $formations = $formationRepository->findAll();
-        $search = $this->createForm(SearchType::class);
+        $lessonObject = $lessonRepository->find($lesson);
+        $lessonsDone = $this->getUser()->getLessonDones();
+        $done = 0;
 
-        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
+        foreach($lessonsDone as $lessonDone) {
+            if($lesson == $lessonDone->getLesson()->getId()) {
+                $done = 1;
+            }
+        }
 
-        return $this->render('formation/index.html.twig', [
-            'formations' => $arrayOfFormations,
-            'search' => $search->createView(),
+        return $this->render('formation/lesson.html.twig', [
+            'lesson' => $lessonObject,
+            'formation' => $formation,
+            'done' => $done,
         ]);
     }
 
-    #[Route('/formations/{formation}/{section}/{lesson}', name: 'app_formation_section')]
-    public function lesson(FormationRepository $formationRepository): Response
+    #[Route('/formations/done/{formation}/{lesson}', name: 'app_formation_lesson_done')]
+    public function lessonDone(LessonRepository $lessonRepository, EntityManagerInterface $entityManager, $formation, $lesson): Response
     {
-        $formations = $formationRepository->findAll();
-        $search = $this->createForm(SearchType::class);
+        $lesson = $lessonRepository->find($lesson);
+        $lessonDone = new LessonDone();
+        $lessonDone->setLesson($lesson);
+        $lessonDone->setLearner($this->getUser());
+        $entityManager->persist($lessonDone);
+        $entityManager->flush();
 
-        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
-
-        return $this->render('formation/index.html.twig', [
-            'formations' => $arrayOfFormations,
-            'search' => $search->createView(),
-        ]);
+        return $this->render('app_formation_view', ['formation' => $formation]);
     }
 
     #[Route('/json/formations/{query}', name: 'app_formation_search')]
@@ -104,24 +132,42 @@ class FormationController extends AbstractController
                 $progress = $formationRepository->findLearnerProgressForEachFormation($this->getUser()->getId());
 
                 $arrayOfFormations = [];
-                foreach ($formations as $formation) {
+                if(is_array($formations)) {
+                    foreach ($formations as $formation) {
+                        $formationWritten = false;
+                        foreach ($progress as $formationProgress) {
+                            if($formation->getId() == $formationProgress['id']) {
+                                $arrayOfFormations[] = $formation->toArray();
+                                $arrayOfFormations[array_key_last($arrayOfFormations)]['progress'] = $formationProgress['progress'];
+                                $formationWritten = true;
+                            }
+                        }
+                        if ($formationWritten === false) {
+                            $arrayOfFormations[] = $formation->toArray();
+                        }
+                    }
+                } else {
                     $formationWritten = false;
                     foreach ($progress as $formationProgress) {
-                        if($formation->getId() == $formationProgress['id']) {
-                            $arrayOfFormations[] = $formation->toArray();
-                            $arrayOfFormations[array_key_last($arrayOfFormations)]['progress'] = $formationProgress['progress'];
+                        if($formations->getId() == $formationProgress['id']) {
+                            $arrayOfFormations = $formations->toArray();
+                            $arrayOfFormations['progress'] = $formationProgress['progress'];
                             $formationWritten = true;
                         }
                     }
                     if ($formationWritten === false) {
-                        $arrayOfFormations[] = $formation->toArray();
+                        $arrayOfFormations = $formations->toArray();
                     }
                 }
             }
         } else {
             $arrayOfFormations = [];
-            foreach ($formations as $formation) {
-                $arrayOfFormations[] = $formation->toArray();
+            if(is_array($formations)) {
+                foreach ($formations as $formation) {
+                    $arrayOfFormations[] = $formation->toArray();
+                }
+            } else {
+                $arrayOfFormations = $formations->toArray();
             }
         }
         return $arrayOfFormations;

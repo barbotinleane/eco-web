@@ -121,6 +121,7 @@ class Formation
 
     public function toArray() {
         return [
+            "id" => $this->id,
             "title" => $this->title,
             "description" => $this->description,
             "image" => $this->image

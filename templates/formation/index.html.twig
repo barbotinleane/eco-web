@@ -56,9 +56,11 @@
                         </div>
                     {% endif %}
                     <div class="text-center">
-                        <button class="button-primary">
+                        <a
+                        class="button-primary"
+                        href="{{ path('app_formation_view', {"formation": formation.id}) }}">
                             Accéder à la formation
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
