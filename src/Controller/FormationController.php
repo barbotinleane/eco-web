@@ -126,4 +126,18 @@ class FormationController extends AbstractController
             "formations" => $arrayOfFormations
         ]);
     }
+
+    #[Route('/formations', name: 'app_formation_add')]
+    public function add(FormationRepository $formationRepository, FormationResultFormater $formationResultFormater): Response
+    {
+        $formations = $formationRepository->findAll();
+        $search = $this->createForm(SearchType::class);
+
+        $arrayOfFormations = $formationResultFormater->formationsToArrayWithProgress($formations, $formationRepository);
+
+        return $this->render('formation/index.html.twig', [
+            'formations' => $arrayOfFormations,
+            'search' => $search->createView(),
+        ]);
+    }
 }

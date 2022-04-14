@@ -59,6 +59,16 @@ class FormationRepository extends ServiceEntityRepository
         return $formations;
     }
 
+    public function findByAuthor($authorId)
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.author = :id')
+            ->setParameter('id', $authorId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /**
     * @return Formation[] Returns an array of Formation objects
     */

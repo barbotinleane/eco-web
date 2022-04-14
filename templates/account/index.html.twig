@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Compte{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        <section class="my-5">
+            <h1 class="text-space-mono-bold text-secondary">Bonjour, {{ app.user.pseudo }}</h1>
+        </section>
+        {% if is_granted('ROLE_LEARNER') %}
+            <section>
+                <div class="text-center">
+                    <a href="{{ path('app_formation') }}" class="button-primary">Voir ma progression</a>
+                </div>
+            </section>
+        {% endif %}
+        {% if is_granted('ROLE_FORMATOR') %}
+            <section>
+                <h2 class="text-center text-primary text-space-mono">Mes formations</h2>
+                <table class="table table-striped">
+                    <tbody>
+                        {% for formation in formations %}
+                        <tr>
+                            <td><span class="text-space-mono text-dark">{{ formation.title }}</span></td>
+                            <td>
+                                <button class="button-primary"><i class="fa fa-pen"></i></button>
+                                <button class="button-secondary"><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <div class="text-center">
+                    <a href="{{ path('app_formation_add') }}" class="button-primary">Ajouter une formation</a>
+                </div>
+            </section>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <section>
+                <h2>Demandes pour devenir formateur</h2>
+            </section>
+        {% endif %}
+    {% else %}
+        <p>Vous n'avez pas accès à cette page, veuillez retourner à la page d'accueil.</p>
+    {% endif %}
+</section>
+{% endblock %}
