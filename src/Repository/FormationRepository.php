@@ -125,15 +125,15 @@ class FormationRepository extends ServiceEntityRepository
         return $doneFormations;
     }
 
-    /*
-    public function findOneBySomeField($value): ?Formation
+    /**
+     * @return Formation[] Returns an array of Formation objects
+     */
+    public function findThree()
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
+            ->setMaxResults(3)
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
         ;
     }
-    */
 }

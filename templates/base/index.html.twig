@@ -3,24 +3,45 @@
 {% block title %}EcoWeb | Formations pour un web toujours plus écologique{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <h1>Accueil</h1>
-
-        <h2>Fonts</h2>
-        <p class="text-space-mono">Space Mono</p>
-        <p class="text-space-mono-bold">Space Mono Bold</p>
-        <p class="text-segoe-ui">Segoe UI</p>
-        <p class="text-segoe-ui-bold">Segoe UI Bold</p>
-        <p class="text-segoe-ui-light">Segoe UI Light</p>
-
-        <div class="bg-dark m-4 p-4 rounded-corners text-white">
-            <h3 class="text-space-mono-bold text-secondary">Titre des sections</h3>
-            <h4 class="text-space-mono text-light">Sous-titres</h4>
-            <p class="text-segoe-ui">
-                Lorem ipsum dolor sit amet, consetetur adipiscing elit.
-            </p>
-            <button class="button-primary">Button</button>
+    <div class="bg-leaf">
+        <div class="d-flex flex-column align-items-center justify-content-center bg-clear h-90">
+            <h1 class="text-secondary text-space-mono-bold my-5">EcoWeb</h1>
+            <div class="justify-self-end text-light">
+                <i class="fa fa-arrow-down"></i>
+            </div>
         </div>
+    </div>
 
+    <div class="container-fluid">
+        <section class="row bg-dark py-5 px-2 px-sm-5 text-white text-segoe-ui rounded-corners">
+            <h2 class="text-primary text-space-mono">Qui sommes nous ?</h2>
+            <div class="col-12 order-2 col-sm-9 order-sm-1">
+                <p>
+                    C’est un fait, la crise écologique est devenue une urgence majeure. La sixième extinction
+                    massive a déjà commencé et le changement climatique se fait de plus en plus ressentir au fil
+                    des années. Mais qu’en est-il d’internet ?
+                </p>
+                <p>
+                    En matière d’émissions de CO2, il pollue 1.5 fois plus que le transport aérien. D’ailleurs, en 20
+                    ans, le poids d’une page web a été multiplié par 115 <a href="https://www.greenit.fr/">(voir la source)</a>.
+                    Face à ce constat, un organisme de formation a été fondé en 2017 : EcoIT. Son objectif est
+                    d’être une plateforme d’éducation permettant à tout instructeur expert en accessibilité et en
+                    éco-conception web de présenter des modules de cours.
+                </p>
+                <p>
+                    À terme, EcoIT désire devenir la référence française pour les développeurs soucieux de leur
+                    impact digital. Et pourquoi pas délivrer enfin un label officiel pour classer les sites web selon
+                    leur empreinte numérique.
+                </p>
+            </div>
+            <div class="col-12 order-1 col-sm-3 order-sm-2">
+                <img class="w-100" src="{{ asset('build/photos/logo.png') }}">
+            </div>
+        </section>
+
+        <section class="row my-5">
+            <h2 class="text-secondary text-space-mono text-center">Nos formations</h2>
+            {% include 'formation/list.html.twig' with formations %}
+        </section>
     </div>
 {% endblock %}

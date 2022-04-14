@@ -6,6 +6,7 @@ use App\Entity\LessonDone;
 use App\Form\SearchType;
 use App\Repository\FormationRepository;
 use App\Repository\LessonRepository;
+use App\Service\FormationResultFormater;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,12 +15,12 @@ use Doctrine\ORM\EntityManagerInterface;
 class FormationController extends AbstractController
 {
     #[Route('/formations', name: 'app_formation')]
-    public function index(FormationRepository $formationRepository): Response
+    public function index(FormationRepository $formationRepository, FormationResultFormater $formationResultFormater): Response
     {
         $formations = $formationRepository->findAll();
         $search = $this->createForm(SearchType::class);
 
-        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
+        $arrayOfFormations = $formationResultFormater->formationsToArrayWithProgress($formations, $formationRepository);
 
         return $this->render('formation/index.html.twig', [
             'formations' => $arrayOfFormations,
@@ -28,10 +29,10 @@ class FormationController extends AbstractController
     }
 
     #[Route('/formations/{formation}', name: 'app_formation_view')]
-    public function formation(FormationRepository $formationRepository, string $formation): Response
+    public function formation(FormationRepository $formationRepository, FormationResultFormater $formationResultFormater, string $formation): Response
     {
         $formation = $formationRepository->find($formation);
-        $formationWithProgress = $this->formationsToArrayWithProgress($formation, $formationRepository);
+        $formationWithProgress = $formationResultFormater->formationsToArrayWithProgress($formation, $formationRepository);
 
         $sections = $formation->getSections();
         $lessonsDone = $this->getUser()->getLessonDones();
@@ -91,14 +92,14 @@ class FormationController extends AbstractController
     }
 
     #[Route('/json/formations/{query}', name: 'app_formation_search')]
-    public function search(FormationRepository $formationRepository, string $query) {
+    public function search(FormationRepository $formationRepository, FormationResultFormater $formationResultFormater, string $query) {
         if($query === "all") {
             $formations = $formationRepository->findAll();
         } else {
             $formations = $formationRepository->findByQuery($query);
         }
 
-        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
+        $arrayOfFormations = $formationResultFormater->formationsToArrayWithProgress($formations, $formationRepository);
 
         return $this->json([
             "formations" => $arrayOfFormations
@@ -106,7 +107,7 @@ class FormationController extends AbstractController
     }
 
     #[Route('/json/formation/{filter}', name: 'app_formation_filter')]
-    public function filter(FormationRepository $formationRepository, string $filter) {
+    public function filter(FormationRepository $formationRepository, FormationResultFormater $formationResultFormater, string $filter) {
         if($this->getUser()) {
             if ($filter === "current") {
                 $formations = $formationRepository->findCurrent($this->getUser()->getId());
@@ -119,57 +120,10 @@ class FormationController extends AbstractController
             $formations = $formationRepository->findAll();
         }
 
-        $arrayOfFormations = $this->formationsToArrayWithProgress($formations, $formationRepository);
+        $arrayOfFormations = $formationResultFormater->formationsToArrayWithProgress($formations, $formationRepository);
 
         return $this->json([
             "formations" => $arrayOfFormations
         ]);
-    }
-
-    public function formationsToArrayWithProgress($formations, FormationRepository $formationRepository) {
-        if($this->getUser()) {
-            if (in_array('ROLE_LEARNER', $this->getUser()->getRoles())) {
-                $progress = $formationRepository->findLearnerProgressForEachFormation($this->getUser()->getId());
-
-                $arrayOfFormations = [];
-                if(is_array($formations)) {
-                    foreach ($formations as $formation) {
-                        $formationWritten = false;
-                        foreach ($progress as $formationProgress) {
-                            if($formation->getId() == $formationProgress['id']) {
-                                $arrayOfFormations[] = $formation->toArray();
-                                $arrayOfFormations[array_key_last($arrayOfFormations)]['progress'] = $formationProgress['progress'];
-                                $formationWritten = true;
-                            }
-                        }
-                        if ($formationWritten === false) {
-                            $arrayOfFormations[] = $formation->toArray();
-                        }
-                    }
-                } else {
-                    $formationWritten = false;
-                    foreach ($progress as $formationProgress) {
-                        if($formations->getId() == $formationProgress['id']) {
-                            $arrayOfFormations = $formations->toArray();
-                            $arrayOfFormations['progress'] = $formationProgress['progress'];
-                            $formationWritten = true;
-                        }
-                    }
-                    if ($formationWritten === false) {
-                        $arrayOfFormations = $formations->toArray();
-                    }
-                }
-            }
-        } else {
-            $arrayOfFormations = [];
-            if(is_array($formations)) {
-                foreach ($formations as $formation) {
-                    $arrayOfFormations[] = $formation->toArray();
-                }
-            } else {
-                $arrayOfFormations = $formations->toArray();
-            }
-        }
-        return $arrayOfFormations;
     }
 }

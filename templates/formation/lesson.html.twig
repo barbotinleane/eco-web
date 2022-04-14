@@ -4,7 +4,7 @@
 
 {% block body %}
     {% if is_granted('ROLE_LEARNER') %}
-        <div class="mt-4">
+        <div class="mt-4 pt-5">
             <a class="button-primary" href="{{ path("app_formation_view", {"formation": formation}) }}">
                 <- Revenir à la formation
             </a>

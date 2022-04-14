@@ -3,7 +3,7 @@
 {% block title %}EcoWeb | Découvrez nos formations{% endblock %}
 
 {% block body %}
-    <section class="row my-5">
+    <section class="row my-5 pt-5">
         <h1 class="text-space-mono-bold text-secondary">Formations</h1>
     </section>
 
@@ -27,49 +27,7 @@
         </section>
     {% endif %}
 
-    <section class="row my-5" id="formations">
-        {% for formation in formations %}
-            <div class="col-12 col-sm-6 col-md-4">
-                <div class="bg-dark text-white rounded-corners p-4 m-2">
-                    <img src="{{ formation.image }}" class="w-100">
-                    <h2 class="text-space-mono text-light mt-4">
-                        {{ formation.title }}
-                    </h2>
-                    <p>
-                        {{ formation.description }}
-                    </p>
-                    {% if formation.progress is defined %}
-                        <div class="text-secondary mb-3">
-                            <p>Votre progression : </p>
-                            <div class="progress">
-                                <div
-                                        class="progress-bar bg-secondary"
-                                        role="progressbar"
-                                        style="width: {{ formation.progress }}%;"
-                                        aria-valuenow="{{ formation.progress }}"
-                                        aria-valuemin="0"
-                                        aria-valuemax="100"
-                                >
-                                    {{ formation.progress }}%
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="text-center">
-                        <a
-                        class="button-primary"
-                        {% if is_granted('ROLE_LEARNER') %}
-                            href="{{ path('app_formation_view', {"formation": formation.id}) }}">
-                        {% else %}
-                            href="{{ path('app_register') }}">
-                        {% endif %}
-                            Accéder à la formation
-                        </a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </section>
+    {% include 'formation/list.html.twig' with formations %}
 
     <div id="Hidden-Elements" style="display: none">
         <div class="progress-bar bg-secondary" role="progressbar" style="width: 50%"
