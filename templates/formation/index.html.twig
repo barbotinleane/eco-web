@@ -58,7 +58,11 @@
                     <div class="text-center">
                         <a
                         class="button-primary"
-                        href="{{ path('app_formation_view', {"formation": formation.id}) }}">
+                        {% if is_granted('ROLE_LEARNER') %}
+                            href="{{ path('app_formation_view', {"formation": formation.id}) }}">
+                        {% else %}
+                            href="{{ path('app_register') }}">
+                        {% endif %}
                             Accéder à la formation
                         </a>
                     </div>
