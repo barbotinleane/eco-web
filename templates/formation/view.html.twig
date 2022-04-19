@@ -3,7 +3,7 @@
 {% block title %}EcoWeb | Formation {{ formation.title }}{% endblock %}
 
 {% block body %}
-    {% if is_granted('ROLE_LEARNER') %}
+    {% if app.user %}
     <section class="row my-5 pt-5">
         <div class="col-12 col-sm-3 order-1 order-sm-2">
             <img src="{{ asset('build/photos/formation/'~formation.image) }}" class="w-100">

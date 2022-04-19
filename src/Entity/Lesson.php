@@ -28,6 +28,9 @@ class Lesson
     #[ORM\OneToMany(mappedBy: 'lesson', targetEntity: Resources::class, orphanRemoval: true)]
     private $resources;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $video;
+
     public function __construct()
     {
         $this->resources = new ArrayCollection();
@@ -100,6 +103,18 @@ class Lesson
                 $resource->setLesson(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVideo(): ?string
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?string $video): self
+    {
+        $this->video = $video;
 
         return $this;
     }

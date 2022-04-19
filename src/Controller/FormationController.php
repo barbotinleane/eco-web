@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Formation;
 use App\Entity\LessonDone;
 use App\Form\FormationType;
 use App\Form\SearchType;
 use App\Repository\FormationRepository;
 use App\Repository\LessonRepository;
+use App\Service\FileUploader;
 use App\Service\FormationResultFormater;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,24 +64,112 @@ class FormationController extends AbstractController
         ]);
     }
 
-    #[Route('/formations/{formation}/{lesson}', name: 'app_formation_lesson')]
-    public function lesson(LessonRepository $lessonRepository, $formation, $lesson): Response
+    #[Route('/account/add/formation', name: 'app_add_formation')]
+    public function addFormation(Request $request, FileUploader $fileUploader, EntityManagerInterface $entityManager): Response
     {
-        $lessonObject = $lessonRepository->find($lesson);
-        $lessonsDone = $this->getUser()->getLessonDones();
-        $done = 0;
+        $formation = new Formation();
+        $originalSections = new ArrayCollection();
 
-        foreach($lessonsDone as $lessonDone) {
-            if($lesson == $lessonDone->getLesson()->getId()) {
-                $done = 1;
-            }
+        foreach ($formation->getSections() as $section) {
+            $originalSections->add($section);
         }
 
-        return $this->render('formation/lesson.html.twig', [
-            'lesson' => $lessonObject,
-            'formation' => $formation,
-            'done' => $done,
+        $editForm = $this->createForm(FormationType::class, $formation);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            // remove the relationship between the tag and the Task
+            foreach ($originalSections as $section) {
+                if (false === $formation->getSections()->contains($section)) {
+                    // remove the Task from the Tag
+                    $formation->getSections()->removeElement($section);
+
+                    $entityManager->persist($formation);
+                }
+            }
+
+            /** @var UploadedFile $brochureFile */
+            $imageFile = $editForm->get('imageFile')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->upload($imageFile);
+                $formation->setImage($imageFileName);
+            }
+
+            $formation->setAuthor($this->getUser());
+
+            $entityManager->persist($formation);
+            $entityManager->flush();
+
+            // redirect back to some edit page
+            return $this->redirectToRoute('app_update_formation');
+        }
+
+        return $this->render('formation/add.html.twig', [
+            'form' => $editForm->createView(),
+            'update' => 0,
         ]);
+    }
+
+    #[Route('/account/update/formation/{id}', name: 'app_update_formation', requirements: ['id' => '\d+'])]
+    public function updateFormation(Request $request, FileUploader $fileUploader, EntityManagerInterface $entityManager, $id = null): Response
+    {
+        $formation = null;
+        if($id === null) {
+            $formation = new Formation();
+        } else if (null === $formation = $entityManager->getRepository(Formation::class)->find($id)) {
+            $formation = new Formation();
+        }
+
+        $originalSections = new ArrayCollection();
+
+        foreach ($formation->getSections() as $section) {
+            $originalSections->add($section);
+        }
+
+        $editForm = $this->createForm(FormationType::class, $formation);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isSubmitted() && $editForm->isValid()) {
+            // remove the relationship between the tag and the Task
+            foreach ($originalSections as $section) {
+                if (false === $formation->getSections()->contains($section)) {
+                    // remove the Task from the Tag
+                    $formation->getSections()->removeElement($section);
+
+                    $entityManager->persist($formation);
+                }
+            }
+
+            /** @var UploadedFile $brochureFile */
+            $imageFile = $editForm->get('imageFile')->getData();
+            if ($imageFile) {
+                $imageFileName = $fileUploader->upload($imageFile);
+                $formation->setImage($imageFileName);
+            }
+
+            $formation->setAuthor($this->getUser());
+
+            $entityManager->persist($formation);
+            $entityManager->flush();
+
+            // redirect back to some edit page
+            return $this->redirectToRoute('app_update_formation');
+        }
+
+        return $this->render('formation/add.html.twig', [
+            'form' => $editForm->createView(),
+            'update' => 1,
+        ]);
+    }
+
+    #[Route('/account/delete/formation/{id}', name: 'app_delete_formation')]
+    public function deleteFormation(EntityManagerInterface $entityManager, $id): Response
+    {
+        $formation = $entityManager->getRepository(Formation::class)->find($id);
+        $entityManager->remove($formation);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_account');
     }
 
     #[Route('/done/{formation}/{lesson}', name: 'app_formation_lesson_done')]

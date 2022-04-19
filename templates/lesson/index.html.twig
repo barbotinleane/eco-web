@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoWeb | Ajouter une leçon{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_FORMATOR') %}
+        <section>
+            <h1 class="text-space-mono-bold text-secondary pt-5 mt-3">
+                {% if update == 1 %}
+                    Modifier une leçon
+                {% else %}
+                    Ajouter une leçon
+                {% endif %}
+            </h1>
+        </section>
+        <section>
+            {{ form_start(form) }}
+            <div class="row">
+                {{ form_row(form.title) }}
+                {{ form_row(form.video) }}
+            </div>
+            {{ form_row(form.content) }}
+
+            <div class="text-center">
+                <input type="submit"
+                       {% if update == 1 %}
+                           value="Modifier"
+                       {% else %}
+                           value="Ajouter"
+                       {% endif %}
+                       class="button-dark"/>
+            </div>
+            {{ form_end(form) }}
+        </section>
+    {% else %}
+        <p>Vous n'avez pas accès à cette page. Veuillez retourner à la page d'accueil.</p>
+    {% endif %}
+{% endblock %}

@@ -23,8 +23,14 @@
                         <tr>
                             <td><span class="text-space-mono text-dark">{{ formation.title }}</span></td>
                             <td>
-                                <button class="button-primary"><i class="fa fa-pen"></i></button>
-                                <button class="button-secondary"><i class="fa fa-trash"></i></button>
+                                <a
+                                    class="button-primary"
+                                    href="{{ path('app_update_formation', {id: formation.id}) }}"
+                                ><i class="fa fa-pen"></i></a>
+                                <a
+                                    class="button-secondary"
+                                    href="{{ path('app_delete_formation', {id: formation.id}) }}"
+                                ><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -33,7 +39,7 @@
             </section>
             <section>
                 <div class="text-center">
-                    <a href="{{ path('app_account_add_formation') }}" class="button-primary">Ajouter une formation</a>
+                    <a href="{{ path('app_add_formation') }}" class="button-primary">Ajouter une formation</a>
                 </div>
             </section>
         {% endif %}

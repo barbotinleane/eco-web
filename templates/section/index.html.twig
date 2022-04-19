@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoWeb | Ma section{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_FORMATOR') %}
+        <section>
+            <h2 class="text-center text-primary text-space-mono">{{ section.title }}</h2>
+            <table class="table table-striped">
+                <tbody>
+                {% for lesson in section.lessons %}
+                    <tr>
+                        <td><span class="text-space-mono text-dark">{{ lesson.title }}</span></td>
+                        <td>
+                            <a
+                                    class="button-primary"
+                                    href="{{ path('app_update_lesson',
+                                        {
+                                            formationId: section.formation.id,
+                                            sectionId: section.id,
+                                            lessonId: lesson.id
+                                        })
+                                    }}"
+                            ><i class="fa fa-pen"></i></a>
+                            <a
+                                    class="button-secondary"
+                                    href="{{ path('app_delete_lesson', {
+                                        formationId: section.formation.id,
+                                        sectionId: section.id,
+                                        lessonId: lesson.id
+                                    }) }}"
+                            ><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <div class="text-center">
+                <a href="{{ path('app_add_lesson', {
+                    formationId: section.formation.id,
+                    sectionId: section.id
+                }) }}" class="button-primary">
+                    Ajouter une leçon
+                </a>
+            </div>
+        </section>
+    {% else %}
+        <p>Vous n'avez pas accès à cette page, veuillez retourner à la page d'accueil.</p>
+    {% endif %}
+    </section>
+{% endblock %}

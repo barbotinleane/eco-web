@@ -3,7 +3,7 @@
 {% block title %}EcoWeb | Lesson {{ lesson.title }}{% endblock %}
 
 {% block body %}
-    {% if is_granted('ROLE_LEARNER') %}
+    {% if app.user %}
         <div class="mt-4 pt-5">
             <a class="button-primary" href="{{ path("app_formation_view", {"formation": formation}) }}">
                 <- Revenir à la formation
@@ -12,6 +12,13 @@
 
         <section class="row my-5">
             <h1 class="text-space-mono-bold text-secondary">{{ lesson.title }}</h1>
+            {% if lesson.video %}
+                <div class="p-3 text-center">
+                    <video width="320" height="240" controls>
+                        <source src="{{ asset('build/photos/formation/'~lesson.video) }}" type="video/webm">
+                    </video>
+                </div>
+            {% endif %}
             <p>
                 {{ lesson.content }}
             </p>
