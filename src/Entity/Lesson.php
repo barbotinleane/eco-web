@@ -21,7 +21,7 @@ class Lesson
     #[ORM\Column(type: 'text', nullable: true)]
     private $content;
 
-    #[ORM\ManyToOne(targetEntity: Section::class, inversedBy: 'lessons')]
+    #[ORM\ManyToOne(targetEntity: Section::class, cascade: ['persist'], inversedBy: 'lessons')]
     #[ORM\JoinColumn(nullable: false)]
     private $section;
 

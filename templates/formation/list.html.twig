@@ -2,7 +2,7 @@
     {% for formation in formations %}
         <div class="col-12 col-sm-6 col-md-4">
             <div class="bg-dark text-white rounded-corners p-4 m-2">
-                <img src="{{ formation.image }}" class="w-100">
+                <img src="{{ asset('build/photos/formation/'~formation.image) }}" class="w-100">
                 <h2 class="text-space-mono text-light mt-4">
                     {{ formation.title }}
                 </h2>

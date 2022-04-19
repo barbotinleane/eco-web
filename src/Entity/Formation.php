@@ -18,7 +18,7 @@ class Formation
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Section::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'formation', targetEntity: Section::class, cascade: ['persist'], orphanRemoval: true)]
     private $sections;
 
     #[ORM\ManyToOne(targetEntity: User::class)]

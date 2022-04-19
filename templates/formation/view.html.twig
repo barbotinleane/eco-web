@@ -6,7 +6,7 @@
     {% if is_granted('ROLE_LEARNER') %}
     <section class="row my-5 pt-5">
         <div class="col-12 col-sm-3 order-1 order-sm-2">
-            <img src="{{ formation.image }}" class="w-100">
+            <img src="{{ asset('build/photos/formation/'~formation.image) }}" class="w-100">
         </div>
         <div class="col-12 col-sm-9 order-2 order-sm-1">
             <h1 class="text-space-mono-bold text-secondary">{{ formation.title }}</h1>

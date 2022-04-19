@@ -23,7 +23,7 @@ class FormationFixtures extends Fixture implements DependentFixtureInterface
             $formation = new Formation();
             $formation->setTitle($faker->sentence(3));
             $formation->setAuthor($this->getReference(User::class.'_formator_'.$i));
-            $formation->setImage($faker->imageUrl);
+            $formation->setImage("placeholder.png");
             $formation->setDescription($faker->sentence(12));
             $manager->persist($formation);
             $manager->flush();

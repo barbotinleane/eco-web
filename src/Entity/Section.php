@@ -18,7 +18,7 @@ class Section
     #[ORM\Column(type: 'string', length: 255)]
     private $title;
 
-    #[ORM\ManyToOne(targetEntity: Formation::class, inversedBy: 'sections')]
+    #[ORM\ManyToOne(targetEntity: Formation::class, cascade: ['persist'], inversedBy: 'sections')]
     #[ORM\JoinColumn(nullable: false)]
     private $formation;
 
