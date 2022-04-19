@@ -44,8 +44,39 @@
             </section>
         {% endif %}
         {% if is_granted('ROLE_ADMIN') %}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
             <section>
-                <h2>Demandes pour devenir formateur</h2>
+                <h2 class="text-center text-primary text-space-mono">Demandes pour devenir formateur</h2>
+                {% for ask in asks %}
+                    <div class="p-3 border border-dark m-1">
+                        <h3>{{ ask.firstName }} {{ ask.name }}</h3>
+                        <h4>{{ ask.email }}</h4>
+                        <p>{{ ask.description }}</p>
+                        <div>
+                            <a href="{{ path('app_account_accept', {askId: ask.id}) }}"
+                               class="button-primary">
+                                <i class="fa fa-check"></i>
+                                Accepter
+                            </a>
+                            <a href="{{ path('app_account_refuse', {askId: ask.id}) }}"
+                               class="button-secondary">
+                                <i class="fa fa-times"></i>
+                                Refuser
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
             </section>
         {% endif %}
     {% else %}

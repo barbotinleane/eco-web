@@ -99,9 +99,6 @@ class FormationController extends AbstractController
 
             $entityManager->persist($formation);
             $entityManager->flush();
-
-            // redirect back to some edit page
-            return $this->redirectToRoute('app_update_formation');
         }
 
         return $this->render('formation/add.html.twig', [
