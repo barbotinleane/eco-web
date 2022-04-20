@@ -1,33 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}EcoWeb | Ma section{% endblock %}
+{% block title %}EcoWeb | Mon Quiz{% endblock %}
 
 {% block body %}
     {% if is_granted('ROLE_FORMATOR') %}
         <section>
-            <h2 class="text-center text-primary text-space-mono">{{ section.title }}</h2>
+            <h2 class="text-center text-primary text-space-mono">Quiz de fin de section</h2>
+            <p>
+                Ajoutez un quiz à la fin de votre section pour permettre à l'étudiant de tester ses connaissances.
+            </p>
             <table class="table table-striped">
                 <tbody>
-                {% for lesson in section.lessons %}
+                {% for question in section.questions %}
                     <tr>
-                        <td><span class="text-space-mono text-dark">{{ lesson.title }}</span></td>
+                        <td><span class="text-space-mono text-dark">{{ question.question }}</span></td>
                         <td>
                             <a
                                     class="button-primary"
-                                    href="{{ path('app_update_lesson',
+                                    href="{{ path('app_update_question',
                                         {
                                             formationId: section.formation.id,
                                             sectionId: section.id,
-                                            lessonId: lesson.id
+                                            questionId: question.id
                                         })
                                     }}"
                             ><i class="fa fa-pen"></i></a>
                             <a
                                     class="button-secondary"
-                                    href="{{ path('app_delete_lesson', {
+                                    href="{{ path('app_delete_question', {
                                         formationId: section.formation.id,
                                         sectionId: section.id,
-                                        lessonId: lesson.id
+                                        questionId: question.id
                                     }) }}"
                             ><i class="fa fa-trash"></i></a>
                         </td>
@@ -38,19 +41,12 @@
         </section>
         <section>
             <div class="text-center">
-                <a href="{{ path('app_add_lesson', {
+                <a href="{{ path('app_add_question', {
                     formationId: section.formation.id,
                     sectionId: section.id
                 }) }}" class="button-primary">
-                    <i class="fa fa-file-text"></i>
-                    Ajouter une leçon
-                </a>
-                <a href="{{ path('app_quiz', {
-                    formationId: section.formation.id,
-                    sectionId: section.id
-                }) }}" class="button-dark">
-                    <i class="fa fa-question"></i>
-                    Voir le quiz
+                    <i class="fa fa-plus"></i>
+                    Ajouter une question
                 </a>
             </div>
         </section>
@@ -59,3 +55,4 @@
     {% endif %}
     </section>
 {% endblock %}
+

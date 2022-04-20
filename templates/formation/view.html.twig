@@ -61,6 +61,14 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+                {% if quiz[section.id] == 1 %}
+                    <a class="button-secondary" href="{{ path('app_quiz_view', {
+                        formationId: section.formation.id,
+                        sectionId: section.id
+                    }) }}">
+                        Quiz de fin de section
+                    </a>
+                {% endif %}
             </div>
         {% endfor %}
     </section>

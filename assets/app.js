@@ -16,3 +16,4 @@ $(document).ready(function() {
 
 import './search';
 import './formation';
+import './quiz';

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoWeb | Mon Quiz{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        <section class="row my-5 pt-5">
+            <h2 class="text-center text-primary text-space-mono">Quiz</h2>
+            <form action="{{ path('app_quiz_view', {
+                formationId: formationId,
+                sectionId: sectionId
+            }) }}" method="post">
+                {% for question in questions %}
+                    <div class="py-4">
+                        <div class="fw-bold">{{ question.question }}</div>
+                        <div>
+                            {% for answer in question.answers %}
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="{{ answer.id }}"
+                                           id="{{ answer.id }}"
+                                           value="{{ answer.outcome }}"
+                                    >
+                                    <label class="form-check-label" for="{{ answer.id }}">
+                                        {{ answer.answer }}
+                                    </label>
+                                </div>
+                                {% if result|length > 0 %}
+                                    {% if result[answer.id] is defined %}
+                                        {% if result[answer.id] == 1 %}
+                                            <div class="text-success fw-light ps-4">Réponse correcte.</div>
+                                        {% else %}
+                                            <div class="text-danger fw-light ps-4">Réponse incorrecte</div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="text-center">
+                    <button class="button-primary" type="submit">
+                        <i class="fa fa-check"></i>
+                        Valider
+                    </button>
+                </div>
+            </form>
+        </section>
+    {% endif %}
+{% endblock %}

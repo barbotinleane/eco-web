@@ -49,11 +49,17 @@ class FormationController extends AbstractController
         }
 
         $lessons = [];
+        $quiz = [];
         foreach($sections as $section) {
             $lessons[] = [
                 'id' => $section->getId(),
                 'lessons' => $section->getLessons(),
             ];
+            if($section->getQuestions()->isEmpty()) {
+                $quiz[$section->getId()] = 0;
+            } else {
+                $quiz[$section->getId()] = 1;
+            }
         }
 
         return $this->render('formation/view.html.twig', [
@@ -61,6 +67,7 @@ class FormationController extends AbstractController
             'sections' => $sections,
             'lessons' => $lessons,
             'lessonsDone' => $lessonsDoneId,
+            'quiz' => $quiz,
         ]);
     }
 
