@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EcoWeb | Devenir Formateur{% endblock %}
+
+{% block body %}
+    <section class="row my-5 pt-5">
+        <h1 class="text-space-mono-bold text-secondary">Devenir Formateur</h1>
+
+        {{ form_start(form) }}
+            <div class="row">
+                {{ form_row(form.name) }}
+                {{ form_row(form.firstName) }}
+            </div>
+            <div class="row">
+                {{ form_row(form.email) }}
+                {{ form_row(form.password) }}
+            </div>
+            <div class="row">
+                {{ form_row(form.description) }}
+            </div>
+            <div class="text-center py-3">
+                <input type="submit" value="Soumettre la demande" class="button-primary"/>
+            </div>
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

@@ -22,7 +22,7 @@ $field.keyup(function (event) {
 
             const img = document.createElement("img");
             img.classList.add("w-100");
-            img.src = value['image'];
+            img.src = 'build/photos/formation/'+value['image'];
 
             const title = document.createElement("h2");
             title.classList.add("text-space-mono", "text-light", "mt-4");
