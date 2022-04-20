@@ -17,7 +17,14 @@
             {{ form_start(form) }}
             <div class="row">
                 {{ form_row(form.title) }}
-                {{ form_row(form.imageFile) }}
+                <div class="col-12 col-sm-4">
+                    {{ form_label(form.imageFile) }}
+                    {% if update == 1 %}
+                        <img src="{{ asset('build/photos/formation/'~form.vars.value.image) }}" class="w-100"/>
+                    {% endif %}
+                    {{ form_widget(form.imageFile) }}
+                    {{ form_rest(form.imageFile) }}
+                </div>
             </div>
             {{ form_row(form.description) }}
             {% if update == 1 %}
@@ -26,15 +33,17 @@
                     <section class="p-3">
                         {% for section in form.sections %}
                             {{ form_row(section) }}
-                            <a class="button-primary"
-                               href="{{ path('app_update_section', {
-                                 sectionId: section.vars.value.id,
-                                 formationId: form.vars.value.id,
-                               }) }}"
-                            >
-                                <i class="fa fa-eye"></i>
-                                Voir les leçons
-                            </a>
+                            <div class="pt-2 pb-4">
+                                <a class="button-primary"
+                                   href="{{ path('app_update_section', {
+                                       sectionId: section.vars.value.id,
+                                       formationId: form.vars.value.id,
+                                   }) }}"
+                                >
+                                    <i class="fa fa-eye"></i>
+                                    Voir les leçons
+                                </a>
+                            </div>
                         {% endfor %}
                     </section>
                 </section>
@@ -48,7 +57,7 @@
                     + Ajouter une section
                 </button>
             </div>
-            <div class="text-center">
+            <div class="text-center py-4">
                 <input type="submit"
                         {% if update == 1 %}
                             value="Modifier"

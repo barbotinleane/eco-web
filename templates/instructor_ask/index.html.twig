@@ -8,12 +8,19 @@
 
         {{ form_start(form) }}
             <div class="row">
-                {{ form_row(form.name) }}
-                {{ form_row(form.firstName) }}
-            </div>
-            <div class="row">
-                {{ form_row(form.email) }}
-                {{ form_row(form.password) }}
+                <div class="col-12 col-md-4">
+                    {{ form_row(form.photo) }}
+                </div>
+                <div class="col-12 col-md-8">
+                    <div class="row">
+                        {{ form_row(form.name) }}
+                        {{ form_row(form.firstName) }}
+                    </div>
+                    <div class="row">
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.password) }}
+                    </div>
+                </div>
             </div>
             <div class="row">
                 {{ form_row(form.description) }}

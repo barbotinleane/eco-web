@@ -60,10 +60,17 @@
                 <h2 class="text-center text-primary text-space-mono">Demandes pour devenir formateur</h2>
                 {% for ask in asks %}
                     <div class="p-3 border border-dark m-1">
-                        <h3>{{ ask.firstName }} {{ ask.name }}</h3>
-                        <h4>{{ ask.email }}</h4>
-                        <p>{{ ask.description }}</p>
-                        <div>
+                        <div class="row">
+                            <div class="col-12 col-sm-2">
+                                <img src="{{ asset('build/photos/formation/'~ask.photo) }}" class="w-100"/>
+                            </div>
+                            <div class="col-12 col-sm-10">
+                                <h3>{{ ask.firstName }} {{ ask.name }}</h3>
+                                <h4>{{ ask.email }}</h4>
+                                <p>{{ ask.description }}</p>
+                            </div>
+                        </div>
+                        <div class="py-3 text-center">
                             <a href="{{ path('app_account_accept', {askId: ask.id}) }}"
                                class="button-primary">
                                 <i class="fa fa-check"></i>

@@ -36,6 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'learner', targetEntity: LessonDone::class, orphanRemoval: true)]
     private $lessonDones;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $photo;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
@@ -150,6 +153,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $lessonDone->setLearner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
 
         return $this;
     }

@@ -29,6 +29,9 @@ class InstructorAsk
     #[ORM\Column(type: 'string', length: 255)]
     private $password;
 
+    #[ORM\Column(type: 'string', length: 255)]
+    private $photo;
+
     public function __construct()
     {
         $this->id = Uuid::v4();
@@ -95,6 +98,18 @@ class InstructorAsk
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
 
         return $this;
     }

@@ -87,7 +87,7 @@ $progress.change(function (event) {
 
             const img = document.createElement("img");
             img.classList.add("w-100");
-            img.src = value['image'];
+            img.src = 'build/photos/formation/'+value['image'];
 
             const title = document.createElement("h2");
             title.classList.add("text-space-mono", "text-light", "mt-4");
@@ -96,8 +96,9 @@ $progress.change(function (event) {
             const description = document.createElement("p");
             description.innerText = value['description'];
 
-            const button = document.createElement("button");
+            const button = document.createElement("a");
             button.classList.add("button-primary");
+            button.href = "formations/"+value['id'];
             button.innerText = "Accéder à la formation";
 
             if(value['progress'] !== undefined) {

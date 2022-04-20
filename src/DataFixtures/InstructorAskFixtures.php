@@ -27,6 +27,7 @@ class InstructorAskFixtures extends Fixture
             $instructorAsk->setFirstName($faker->firstName);
             $instructorAsk->setEmail($faker->email);
             $instructorAsk->setDescription($faker->sentence);
+            $instructorAsk->setPhoto("sample_profile.jpg");
 
             $formator = new User();
             $formator->setPseudo('');

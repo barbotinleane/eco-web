@@ -95,7 +95,7 @@ class FormationController extends AbstractController
                 }
             }
 
-            /** @var UploadedFile $brochureFile */
+            /** @var UploadedFile $imageFile */
             $imageFile = $editForm->get('imageFile')->getData();
             if ($imageFile) {
                 $imageFileName = $fileUploader->upload($imageFile);
@@ -106,6 +106,10 @@ class FormationController extends AbstractController
 
             $entityManager->persist($formation);
             $entityManager->flush();
+
+            return $this->redirectToRoute('app_update_formation', [
+                'id' => $formation->getId()
+            ]);
         }
 
         return $this->render('formation/add.html.twig', [
@@ -156,8 +160,6 @@ class FormationController extends AbstractController
             $entityManager->persist($formation);
             $entityManager->flush();
 
-            // redirect back to some edit page
-            return $this->redirectToRoute('app_update_formation');
         }
 
         return $this->render('formation/add.html.twig', [

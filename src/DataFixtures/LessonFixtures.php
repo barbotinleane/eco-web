@@ -22,6 +22,7 @@ class LessonFixtures extends Fixture implements DependentFixtureInterface
                     $lesson->setTitle($faker->sentence(4));
                     $lesson->setContent($faker->paragraphs(1, true));
                     $lesson->setSection($this->getReference(Section::class.'_'.$i.'_'.$j));
+                    $lesson->setVideo('video_placeholder.webm');
                     $manager->persist($lesson);
                     $manager->flush();
 
