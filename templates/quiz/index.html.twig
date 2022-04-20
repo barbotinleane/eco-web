@@ -5,6 +5,13 @@
 {% block body %}
     {% if is_granted('ROLE_FORMATOR') %}
         <section>
+            <a href="{{ path('app_update_section', {
+                formationId: formationId,
+                sectionId: sectionId
+            }) }}"
+               class="button-dark">
+                <i class="fa fa-arrow-left"></i>
+            </a>
             <h2 class="text-center text-primary text-space-mono">Quiz de fin de section</h2>
             <p>
                 Ajoutez un quiz à la fin de votre section pour permettre à l'étudiant de tester ses connaissances.

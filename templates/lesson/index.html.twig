@@ -4,8 +4,15 @@
 
 {% block body %}
     {% if is_granted('ROLE_FORMATOR') %}
-        <section>
-            <h1 class="text-space-mono-bold text-secondary pt-5 mt-3">
+        <section class="pt-5">
+            <a href="{{ path('app_update_section', {
+                formationId: formationId,
+                sectionId: sectionId
+            }) }}"
+               class="button-dark">
+                <i class="fa fa-arrow-left"></i>
+            </a>
+            <h1 class="text-space-mono-bold text-secondary mt-3">
                 {% if update == 1 %}
                     Modifier une leçon
                 {% else %}
@@ -21,7 +28,7 @@
             </div>
             {{ form_row(form.content) }}
 
-            <div class="text-center">
+            <div class="text-center py-4">
                 <input type="submit"
                        {% if update == 1 %}
                            value="Modifier"

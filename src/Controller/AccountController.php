@@ -24,6 +24,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -50,16 +51,18 @@ class AccountController extends AbstractController
     }
 
     #[Route('/account/accept/{askId}', name: 'app_account_accept')]
-    public function acceptInstructorAsk($askId, EntityManagerInterface $entityManager)
+    public function acceptInstructorAsk($askId, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher)
     {
         $ask = $entityManager->getRepository(InstructorAsk::class)->find($askId);
-        dump($askId);
-        dump($ask);
 
         $newFormator = new User();
         $newFormator->setPseudo($ask->getFirstName().$ask->getName());
         $newFormator->setEmail($ask->getEmail());
-        $newFormator->setPassword($ask->getPassword());
+        $newFormator->setPassword($userPasswordHasher->hashPassword(
+                $newFormator,
+                $ask->getPassword()
+            )
+        );
         $newFormator->setRoles(['ROLE_FORMATOR']);
 
         $entityManager->remove($ask);

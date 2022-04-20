@@ -4,8 +4,12 @@
 
 {% block body %}
     {% if is_granted('ROLE_FORMATOR') %}
-        <section>
-            <h1 class="text-space-mono-bold text-secondary pt-5 mt-3">
+        <section class="pt-5">
+            <a href="{{ path('app_account') }}"
+               class="button-dark">
+                <i class="fa fa-arrow-left"></i>
+            </a>
+            <h1 class="text-space-mono-bold text-secondary mt-3">
                 {% if update == 1 %}
                     Modifier une formation
                 {% else %}
@@ -52,7 +56,7 @@
                 data-index="{{ form.sections|length > 0 ? form.sections|last.vars.name + 1 : 0 }}"
                 data-prototype="{{ form_widget(form.sections.vars.prototype)|e('html_attr') }}"
             ></section>
-            <div class="text-center">
+            <div class="text-center py-2">
                 <button type="button" class="add_item_link button-primary" data-collection-holder-class="tags">
                     + Ajouter une section
                 </button>
@@ -64,7 +68,7 @@
                         {% else %}
                             value="Ajouter"
                         {% endif %}
-                       class="button-dark"
+                       class="button-dark py-3"
                 />
             </div>
             {{ form_end(form) }}

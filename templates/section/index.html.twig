@@ -5,6 +5,12 @@
 {% block body %}
     {% if is_granted('ROLE_FORMATOR') %}
         <section>
+            <a href="{{ path('app_update_formation', {
+                    id: formationId
+                }) }}"
+               class="button-dark">
+                <i class="fa fa-arrow-left"></i>
+            </a>
             <h2 class="text-center text-primary text-space-mono">{{ section.title }}</h2>
             <table class="table table-striped">
                 <tbody>

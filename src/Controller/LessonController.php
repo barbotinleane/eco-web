@@ -67,6 +67,8 @@ class LessonController extends AbstractController
 
         return $this->render('lesson/index.html.twig', [
             'form' => $form->createView(),
+            'formationId' => $formationId,
+            'sectionId' => $sectionId,
             'update' => 0,
         ]);
     }
@@ -100,6 +102,8 @@ class LessonController extends AbstractController
 
         return $this->render('lesson/index.html.twig', [
             'form' => $form->createView(),
+            'formationId' => $formationId,
+            'sectionId' => $sectionId,
             'update' => 1,
         ]);
     }

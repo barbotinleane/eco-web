@@ -24,6 +24,8 @@ class QuizController extends AbstractController
 
         return $this->render('quiz/index.html.twig', [
             'section' => $section,
+            'formationId' => $formationId,
+            'sectionId' => $sectionId,
         ]);
     }
 
@@ -83,6 +85,8 @@ class QuizController extends AbstractController
 
         return $this->render('quiz/add.html.twig', [
             'form' => $form->createView(),
+            'formationId' => $formationId,
+            'sectionId' => $sectionId,
             'update' => 0
         ]);
     }
@@ -122,6 +126,8 @@ class QuizController extends AbstractController
 
         return $this->render('quiz/add.html.twig', [
             'form' => $form->createView(),
+            'formationId' => $formationId,
+            'sectionId' => $sectionId,
             'update' => 1
         ]);
     }

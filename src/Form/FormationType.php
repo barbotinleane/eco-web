@@ -68,6 +68,9 @@ class FormationType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
+                'label_attr' => [
+                    'class' => 'd-none'
+                ]
             ])
         ;
     }

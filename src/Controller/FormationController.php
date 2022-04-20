@@ -160,6 +160,7 @@ class FormationController extends AbstractController
             $entityManager->persist($formation);
             $entityManager->flush();
 
+            return $this->redirectToRoute('app_account');
         }
 
         return $this->render('formation/add.html.twig', [

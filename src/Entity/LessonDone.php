@@ -14,13 +14,13 @@ class LessonDone
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Lesson::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $lesson;
-
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'lessonDones')]
     #[ORM\JoinColumn(nullable: false)]
     private $learner;
+
+    #[ORM\ManyToOne(targetEntity: Lesson::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    private $lesson;
 
     public function getId(): ?int
     {
