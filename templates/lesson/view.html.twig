@@ -13,7 +13,7 @@
         <section class="row my-5">
             <h1 class="text-space-mono-bold text-secondary">{{ lesson.title }}</h1>
             {% if lesson.video %}
-                <div class="p-3 text-center">
+                <div class="py-3 text-center">
                     <video width="320" height="240" controls>
                         <source src="{{ asset('build/photos/formation/'~lesson.video) }}" type="video/webm">
                     </video>
@@ -24,7 +24,7 @@
             </p>
 
             {% if done != 1 %}
-                <div class="text-center m-5">
+                <div class="text-center p-5">
                     <a
                     class="button-primary"
                     href="{{ path("app_formation_lesson_done", {"formation": formation, "lesson": lesson.id}) }}"

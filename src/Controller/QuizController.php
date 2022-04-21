@@ -38,7 +38,6 @@ class QuizController extends AbstractController
 
         if($request->isMethod('post')) {
             $result = $request->request->all();
-            dump($result);
         }
 
         return $this->render('quiz/view.html.twig', [
