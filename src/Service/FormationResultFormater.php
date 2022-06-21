@@ -20,9 +20,11 @@ class FormationResultFormater
 
             $arrayOfFormations = [];
             if(is_array($formations)) {
+                //for each formation
                 foreach ($formations as $formation) {
                     $formationWritten = false;
                     foreach ($progress as $formationProgress) {
+                        //if the user already begun this formation, add 'progress' key and it value to the formation
                         if($formation->getId() == $formationProgress['id']) {
                             $arrayOfFormations[] = $formation->toArray();
                             $arrayOfFormations[array_key_last($arrayOfFormations)]['progress'] = $formationProgress['progress'];

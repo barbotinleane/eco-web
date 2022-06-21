@@ -37,7 +37,10 @@ class QuizController extends AbstractController
         $result = [];
 
         if($request->isMethod('post')) {
-            $result = $request->request->all();
+            $submittedToken = $request->request->get('token');
+            if ($this->isCsrfTokenValid('submit-quiz', $submittedToken)) {
+                $result = $request->request->all();
+            }
         }
 
         return $this->render('quiz/view.html.twig', [
