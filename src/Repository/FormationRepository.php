@@ -50,8 +50,9 @@ class FormationRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('f');
         $formations = $qb
             ->where($qb->expr()->orX(
-                $qb->expr()->like('f.title', $qb->expr()->literal('%'.$query.'%'))
+                $qb->expr()->like('f.title', ':query')
             ))
+            ->setParameter('query', '%'.$query.'%')
             ->getQuery()
             ->getResult()
             ;

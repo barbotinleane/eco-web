@@ -65,9 +65,9 @@ class AccountController extends AbstractController
         );
         $newFormator->setRoles(['ROLE_FORMATOR']);
 
-        $entityManager->remove($ask);
+        /*$entityManager->remove($ask);
         $entityManager->persist($newFormator);
-        $entityManager->flush();
+        $entityManager->flush();*/
 
         $this->addFlash('success', 'Compte Formateur créé avec le pseudo '.$ask->getFirstName().$ask->getName());
 
