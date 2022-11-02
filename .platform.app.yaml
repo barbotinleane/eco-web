@@ -29,9 +29,6 @@ web:
             expires: 1h
             passthru: "/index.php"
 
-relationships:
-    ecowebdatabase: "database:postgresql"
-
 mounts:
     "/var": { source: local, source_path: var }
 
