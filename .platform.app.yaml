@@ -20,6 +20,9 @@ runtime:
 build:
     flavor: none
 
+relationships:
+    database: "database:postgresql"
+
 disk: 512
 
 web:
