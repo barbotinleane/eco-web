@@ -9,6 +9,7 @@ runtime:
         - sodium
         - ctype
         - iconv
+        - pdo_pgsql
         
 
 #variables:
@@ -43,3 +44,6 @@ hooks:
         set -x -e
 
         symfony-deploy
+
+relationships:
+    ecowebdatabase: "database:postgresql"
