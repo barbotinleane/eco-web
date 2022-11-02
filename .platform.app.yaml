@@ -1,4 +1,4 @@
-name: app
+name: ecoweb
 
 type: php:8.1
 
@@ -29,17 +29,17 @@ web:
             passthru: "/index.php"
 
 
-
 mounts:
     "/var": { source: local, source_path: var }
-    hooks:
-        build: |
-            set -x -e
 
-            curl -s https://get.symfony.com/cloud/configurator | bash
-            symfony-build
+hooks:
+    build: |
+        set -x -e
 
-        deploy: |
-            set -x -e
+        curl -s https://get.symfony.com/cloud/configurator | bash
+        symfony-build
 
-            symfony-deploy
+    deploy: |
+        set -x -e
+
+        symfony-deploy
