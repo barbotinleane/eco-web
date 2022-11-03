@@ -22,7 +22,7 @@ build:
     flavor: none
 
 relationships:
-    database: "database:mysql"
+    database: "db:mysql"
 
 disk: 512
 
